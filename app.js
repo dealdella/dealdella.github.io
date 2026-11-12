@@ -1,4 +1,4 @@
-/* Deal Della — app.js
+/* Deal Della - app.js
    Lógica do original (vitrine) portada: filtros combinados (categoria + busca + ordem),
    salvos em localStorage ('dd-salvos', mesma chave do original), estado vazio e carrossel de destaques.
    Nada aqui injeta HTML a partir de dados externos (só textContent / atributos). */
@@ -172,6 +172,21 @@
       auto = setInterval(() => { if (!pausa && !document.hidden) ir(atual() + 1); }, 7000);
     }
   }
+
+  /* ---------- Altura do topo fixo ----------
+     --hh = altura do cabeçalho (a barra de filtros gruda logo abaixo dele no desktop).
+     A folga de rolagem soma só o que está fixo, para o título de uma âncora não ficar escondido. */
+  const topo = $('.site-header');
+  const barra = $('.barra-filtros');
+  const medir = () => {
+    if (!topo) return;
+    const h = topo.offsetHeight;
+    document.documentElement.style.setProperty('--hh', h + 'px');
+    const fixa = barra && getComputedStyle(barra).position === 'sticky' ? barra.offsetHeight : 0;
+    document.documentElement.style.scrollPaddingTop = (h + fixa + 12) + 'px';
+  };
+  medir();
+  window.addEventListener('resize', medir);
 
   definirCategoria('');
 })();
