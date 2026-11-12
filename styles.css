@@ -155,7 +155,11 @@ button { font: inherit; }
   transition: all var(--transition);
 }
 .chip.ativo { background: var(--tinta); color: var(--base); }
-/* Salvos fica na linha da busca, fora da rolagem dos chips: nunca aparece cortado */
+/* Chips à esquerda e ordem + Salvos à direita, na mesma linha (pedido do usuário, 2026-11-12).
+   Ordem e Salvos ficam fora da rolagem dos chips: nunca aparecem cortados */
+.filtros-linha { display: flex; align-items: center; gap: 12px; }
+.filtros-linha .chips { flex: 1; min-width: 0; }
+.filtros-linha .ferramentas { flex: none; }
 .ferramentas .salvos { flex: none; }
 .chip:hover:not(.ativo) { border-color: var(--gold); color: var(--gold); }
 
@@ -420,6 +424,9 @@ main { padding-bottom: var(--space-lg); }
   html { scroll-padding-top: 130px; }
   .ferramentas { flex-wrap: wrap; }
   .ferramentas select { flex: 1; }
+  /* no celular não cabe ao lado da grade de chips: ordem e Salvos vêm logo abaixo dela */
+  .filtros-linha { flex-direction: column; align-items: stretch; gap: 0; }
+  .filtros-linha .ferramentas { padding-bottom: 8px; }
   /* poucos grupos: grade de 3 colunas no celular, todos visíveis, sem rolagem nem chip cortado */
   .chips {
     display: grid; grid-template-columns: repeat(3, 1fr); overflow: visible; padding-right: 0;
