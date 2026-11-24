@@ -106,7 +106,6 @@ button { font: inherit; }
 /* ===== Header sticky (logo + busca/ordem + chips) ===== */
 .site-header {
   position: sticky; top: 0; z-index: 100;
-  background: var(--branco);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-xs);
 }
@@ -118,8 +117,20 @@ button { font: inherit; }
    no celular rolam com a página, para o cabeçalho fixo ser só logo e busca */
 .barra-filtros {
   position: sticky; top: var(--hh, 124px); z-index: 99;
-  background: var(--branco); border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
+/* Fundo do topo fixo: foto de parede com plantas e iluminação, contínua entre o header e a barra de ferramentas e categorias.
+   Imagem 3:1 (1536x512) com véu branco por cima para o texto e os botões continuarem legíveis. A barra de filtros usa a mesma
+   imagem deslocada pela altura do header (--hh, que o app.js mede), por isso as duas parecem uma faixa só. */
+:root { --topo-w: max(100vw, calc(3 * (var(--hh, 124px) + 60px))); --topo-y: calc(-1 * max(0px, (var(--topo-w) / 3 - var(--hh, 124px) - 60px) / 2)); }
+.site-header, .barra-filtros {
+  background-color: var(--branco);
+  background-image: linear-gradient(rgba(255, 255, 255, .62), rgba(255, 255, 255, .62)), url("assets/bg-topo.webp");
+  background-repeat: no-repeat;
+  background-size: auto, var(--topo-w) auto;
+}
+.site-header { background-position: 0 0, center var(--topo-y); }
+.barra-filtros { background-position: 0 0, center calc(var(--topo-y) - var(--hh, 124px)); }
 
 .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .logo-img { width: 56px; height: 56px; border-radius: 50%; background: var(--base); }
@@ -425,6 +436,7 @@ main { padding-bottom: var(--space-lg); }
   .logo-img { width: 40px; height: 40px; }
   .logo span { font-size: 1.25rem; }
   .barra-filtros { position: static; }      /* opção A: fixo no celular só logo e busca */
+  .barra-filtros { background-image: none; }   /* no celular a barra de filtros rola e quebra em linhas: a foto fica só no header */
   html { scroll-padding-top: 130px; }
   .ferramentas { flex-wrap: wrap; }
   .ferramentas select { flex: 1; }
